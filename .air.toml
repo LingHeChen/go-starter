@@ -1,0 +1,27 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # 只是编译命令
+  cmd = "go build -o ./tmp/main cmd/main.go"
+  # 最终执行命令
+  bin = "./tmp/main"
+  # 监听文件后缀
+  include_ext = ["go", "tpl", "tmpl", "html", "yaml"]
+  # 🟢 关键：忽略前端目录，防止不必要的重启
+  exclude_dir = ["assets", "tmp", "vendor", "ui", ".git"]
+  # 排除未变动的文件
+  exclude_unchanged = true
+  delay = 1000 # 毫秒
+
+[log]
+  time = true
+
+[color]
+  main = "magenta"
+  watcher = "cyan"
+  build = "yellow"
+  runner = "green"
+
+[misc]
+  clean_on_exit = true

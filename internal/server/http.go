@@ -36,6 +36,8 @@ func NewGinEngine(p Params) *gin.Engine {
 		c.Registry(r)
 	}
 
+	RegisterStatic(r)
+
 	return r
 }
 
