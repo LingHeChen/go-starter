@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/linghechen/go-starter/pkg/framework/web"
+	"github.com/linghechen/go-starter/pkg/xerr"
 )
 
 type HelloController struct {
@@ -22,7 +23,7 @@ func (h *HelloController) Registry(r *gin.Engine) {
 	}
 }
 
-func (h *HelloController) GetHello(c context.Context, req *HelloReq) (*HelloResp, error) {
+func (h *HelloController) GetHello(c context.Context, req *HelloReq) (*HelloResp, xerr.Error) {
 	return &HelloResp{
 		Reply: "hello " + req.Name,
 		Time:  time.Now().Format("2006-01-02 15:04:05"),

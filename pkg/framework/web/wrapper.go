@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/linghechen/go-starter/pkg/xerr"
 )
 
 // Standard Response Structure
@@ -17,7 +18,7 @@ type Response struct {
 
 // HandlerFunc 是我们定义的业务函数签名
 // 类似于 FastAPI: 接收 Context 和 请求体，返回 响应体 和 错误
-type HandlerFunc[Req any, Resp any] func(ctx context.Context, req *Req) (*Resp, error)
+type HandlerFunc[Req any, Resp any] func(ctx context.Context, req *Req) (*Resp, xerr.Error)
 
 // Wrap 是核心魔法函数
 // 它将业务函数 handler 转换为 Gin 认识的 gin.HandlerFunc
@@ -47,15 +48,15 @@ func Wrap[Req any, Resp any](handler HandlerFunc[Req, Resp]) gin.HandlerFunc {
 			// 4. 统一错误处理
 			// 这里以后可以扩展：根据自定义 Error 类型判断是 400 还是 500
 			c.JSON(http.StatusInternalServerError, Response{
-				Code: 500,
-				Msg:  err.Error(),
+				Code: err.GetCode(),
+				Msg:  err.GetMsg(),
 			})
 			return
 		}
 
 		// 5. 统一成功响应
 		c.JSON(http.StatusOK, Response{
-			Code: 0,
+			Code: xerr.OK,
 			Msg:  "success",
 			Data: resp,
 		})
